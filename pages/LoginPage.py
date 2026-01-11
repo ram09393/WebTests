@@ -48,8 +48,7 @@ class LoginPageHelper(BasePage):
         field.send_keys(value)
 
     def password_field_empty(self):
-        field = self.find_element(LoginPageLocators.PASSWORD_FIELD)
-        field.clear()
+        self.find_element(LoginPageLocators.PASSWORD_FIELD)
 
     def get_error_text_login(self):
         return self.find_element(LoginPageLocators.ERROR_TEXT_LOGIN).text
