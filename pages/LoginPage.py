@@ -1,5 +1,6 @@
 from pages.BasePage import BasePage
 from selenium.webdriver.common.by import By
+import allure
 
 
 class LoginPageLocators:
@@ -9,7 +10,8 @@ class LoginPageLocators:
     LOGIN_FIELD = (By.ID, 'field_email')
     PASSWORD_FIELD = (By.ID, 'field_password')
 
-    LOGIN_BUTTON_ENTER = (By.XPATH, "//button[contains(@class, 'vkuiButton__host')][@type='submit'][contains(.,'Войти')]")
+    LOGIN_BUTTON_ENTER = (
+        By.XPATH, "//button[contains(@class, 'vkuiButton__host')][@type='submit'][contains(.,'Войти')]")
     LOGIN_BUTTON_ENTER_QR = (By.XPATH, "//button[contains(.,'Войти по QR-коду')]")
     BUTTON_NO_ENTER = (By.XPATH, "// button[text() = 'Не получается войти?']")
 
@@ -39,18 +41,27 @@ class LoginPageHelper(BasePage):
         self.find_element(LoginPageLocators.BUTTON_MAIL)
         self.find_element(LoginPageLocators.BUTTON_YANDEX)
 
+    @allure.step('Нажимаем на кнопку "Войти"')
     def click_login(self):
+        self.attach_screenshot()
         self.find_element(LoginPageLocators.LOGIN_BUTTON_ENTER).click()
 
+    @allure.step('Заполняем поле с логином"')
     def send_keys_login_field(self, value):
+        self.attach_screenshot()
         field = self.find_element(LoginPageLocators.LOGIN_FIELD)
         field.send_keys(value)
 
+    @allure.step('Поле с паролем не заполнено')
     def password_field_empty(self):
         self.find_element(LoginPageLocators.PASSWORD_FIELD)
 
+    @allure.step('Получаем текст ошибки')
     def get_error_text_login(self):
+        self.attach_screenshot()
         return self.find_element(LoginPageLocators.ERROR_TEXT_LOGIN).text
 
+    @allure.step('Получаем текст ошибки')
     def get_error_text_password(self):
+        self.attach_screenshot()
         return self.find_element(LoginPageLocators.ERROR_TEXT_PASSWORD).text
