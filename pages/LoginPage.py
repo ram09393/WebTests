@@ -9,15 +9,16 @@ class LoginPageLocators:
     LOGIN_FIELD = (By.ID, 'field_email')
     PASSWORD_FIELD = (By.ID, 'field_password')
 
-    LOGIN_BUTTON = (By.XPATH, "//button[contains(@class, 'vkuiButton__host')][@type='submit'][contains(.,'Войти')]")
-    LOGIN_BUTTON_QR = (By.XPATH, "//button[contains(.,'Войти по QR-коду')]")
+    LOGIN_BUTTON_ENTER = (By.XPATH, "//button[contains(@class, 'vkuiButton__host')][@type='submit'][contains(.,'Войти')]")
+    LOGIN_BUTTON_ENTER_QR = (By.XPATH, "//button[contains(.,'Войти по QR-коду')]")
     BUTTON_NO_ENTER = (By.XPATH, "// button[text() = 'Не получается войти?']")
 
     BUTTON_REGISTRATION = (By.XPATH, "//button[@type='button' and .//*[contains(text(), 'Зарегистрироваться')]]")
     BUTTON_VK = (By.XPATH, "//a[contains(@class, '__vk_id')]")
-    BUTTON_Mail = (By.XPATH, "//a[contains(@class, '__mailru')]")
-    BUTTON_Yandex = (By.XPATH, "//a[contains(@class, '__yandex')]")
-    ERROR_TEXT = (By.XPATH, "//span[text()='Введите логин']")
+    BUTTON_MAIL = (By.XPATH, "//a[contains(@class, '__mailru')]")
+    BUTTON_YANDEX = (By.XPATH, "//a[contains(@class, '__yandex')]")
+    ERROR_TEXT_LOGIN = (By.XPATH, "//span[.='Введите логин']")
+    ERROR_TEXT_PASSWORD = (By.XPATH, "//span[.='Введите пароль']")
 
 
 class LoginPageHelper(BasePage):
@@ -30,17 +31,26 @@ class LoginPageHelper(BasePage):
         self.find_element(LoginPageLocators.BUTTON_ENTER_QR)
         self.find_element(LoginPageLocators.LOGIN_FIELD)
         self.find_element(LoginPageLocators.PASSWORD_FIELD)
-        self.find_element(LoginPageLocators.LOGIN_BUTTON)
-        self.find_element(LoginPageLocators.LOGIN_BUTTON_QR)
+        self.find_element(LoginPageLocators.LOGIN_BUTTON_ENTER)
+        self.find_element(LoginPageLocators.LOGIN_BUTTON_ENTER_QR)
         self.find_element(LoginPageLocators.BUTTON_NO_ENTER)
         self.find_element(LoginPageLocators.BUTTON_REGISTRATION)
         self.find_element(LoginPageLocators.BUTTON_VK)
-        self.find_element(LoginPageLocators.BUTTON_Mail)
-        self.find_element(LoginPageLocators.BUTTON_Yandex)
+        self.find_element(LoginPageLocators.BUTTON_MAIL)
+        self.find_element(LoginPageLocators.BUTTON_YANDEX)
 
     def click_login(self):
-        self.find_element(LoginPageLocators.LOGIN_BUTTON).click()
+        self.find_element(LoginPageLocators.LOGIN_BUTTON_ENTER).click()
 
-    def get_error_text(self):
-        return self.find_element(LoginPageLocators.ERROR_TEXT).text
+    def send_keys_login_field(self, value):
+        field = self.find_element(LoginPageLocators.LOGIN_FIELD)
+        field.send_keys(value)
 
+    def password_field_empty(self):
+        self.find_element(LoginPageLocators.PASSWORD_FIELD)
+
+    def get_error_text_login(self):
+        return self.find_element(LoginPageLocators.ERROR_TEXT_LOGIN).text
+
+    def get_error_text_password(self):
+        return self.find_element(LoginPageLocators.ERROR_TEXT_PASSWORD).text
