@@ -1,5 +1,3 @@
-import allure
-
 from pages.BasePage import BasePage
 from selenium.webdriver.common.by import By
 import allure
@@ -12,17 +10,16 @@ class LoginPageLocators:
     LOGIN_FIELD = (By.ID, 'field_email')
     PASSWORD_FIELD = (By.ID, 'field_password')
 
-    LOGIN_BUTTON_ENTER = (
-        By.XPATH, "//button[contains(@class, 'vkuiButton__host')][@type='submit'][contains(.,'Войти')]")
+    LOGIN_BUTTON_ENTER = (By.XPATH, "//button[contains(@class, 'vkuiButton__host')][@type='submit'][contains(.,'Войти')]")
     LOGIN_BUTTON_ENTER_QR = (By.XPATH, "//button[contains(.,'Войти по QR-коду')]")
     BUTTON_NO_ENTER = (By.XPATH, "// button[text() = 'Не получается войти?']")
-
-    BUTTON_REGISTRATION = (By.XPATH, "//button[@type='button' and .//*[contains(text(), 'Зарегистрироваться')]]")
+    BUTTON_REGISTRATION = (By.XPATH, "//button[.//span[text()='Зарегистрироваться']]")
     BUTTON_VK = (By.XPATH, "//a[contains(@class, '__vk_id')]")
     BUTTON_MAIL = (By.XPATH, "//a[contains(@class, '__mailru')]")
     BUTTON_YANDEX = (By.XPATH, "//a[contains(@class, '__yandex')]")
     ERROR_TEXT_LOGIN = (By.XPATH, "//span[.='Введите логин']")
     ERROR_TEXT_PASSWORD = (By.XPATH, "//span[.='Введите пароль']")
+    GO_BACK_BUTTON = (By.XPATH, "//button[.//span[text()='Отмена']]")
 
 
 class LoginPageHelper(BasePage):
@@ -31,6 +28,8 @@ class LoginPageHelper(BasePage):
         self.check_page()
 
     def check_page(self):
+        with allure.step('Проверяем корректность загрузки страницы'):
+            self.attach_screenshot()
         self.find_element(LoginPageLocators.BUTTON_ENTER)
         self.find_element(LoginPageLocators.BUTTON_ENTER_QR)
         self.find_element(LoginPageLocators.LOGIN_FIELD)
@@ -67,3 +66,18 @@ class LoginPageHelper(BasePage):
     def get_error_text_password(self):
         self.attach_screenshot()
         return self.find_element(LoginPageLocators.ERROR_TEXT_PASSWORD).text
+
+    @allure.step('Заполняем поле логин')
+    def type_login(self, login):
+        self.find_element(LoginPageLocators.LOGIN_FIELD).send_keys(login)
+        self.attach_screenshot()
+
+    @allure.step('Заполняем поле пароль')
+    def type_password(self, password):
+        self.find_element(LoginPageLocators.PASSWORD_FIELD).send_keys(password)
+        self.attach_screenshot()
+
+    @allure.step('Переходим к восстановлению')
+    def click_recovery(self):
+        self.attach_screenshot()
+        self.find_element(LoginPageLocators.BUTTON_NO_ENTER).click()
