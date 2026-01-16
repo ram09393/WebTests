@@ -22,7 +22,7 @@ def test_empty_login_and_password(browser):
 def test_empty_password(browser):
     BasePage(browser).get_url(BASE_URL)
     LoginPage = LoginPageHelper(browser)
-    LoginPage.send_keys_login_field("qwerty@mail.ru")
+    LoginPage.send_keys_login_field("mail.ru")
     LoginPage.click_login()
     LoginPage.password_field_empty()
 
